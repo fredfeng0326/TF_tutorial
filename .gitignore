@@ -1,0 +1,7 @@
+.env
+.venv
+env/
+venv/
+.idea
+mnist_data/
+mnist_data

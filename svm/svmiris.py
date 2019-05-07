@@ -7,7 +7,7 @@ from sklearn import svm, datasets
 
 def make_meshgrid(x, y, h=.02):
     """Create a mesh of points to plot in
-
+    画点图
     Parameters
     ----------
     x: data to base x-axis meshgrid on
@@ -27,7 +27,7 @@ def make_meshgrid(x, y, h=.02):
 
 def plot_contours(ax, clf, xx, yy, **params):
     """Plot the decision boundaries for a classifier.
-
+    画等高线填充图
     Parameters
     ----------
     ax: matplotlib axes object

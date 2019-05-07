@@ -7,6 +7,7 @@ from scipy import stats
 from sklearn.metrics import accuracy_score
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
 
 
 def extend(a, b, r=0.01):
@@ -16,21 +17,22 @@ def extend(a, b, r=0.01):
 if __name__ == "__main__":
     np.random.seed(0)
     N = 200
-    x = np.empty((4*N, 2))
+    x = np.empty((4 * N, 2))
     means = [(-1, 1), (1, 1), (1, -1), (-1, -1)]
-    sigmas = [np.eye(2), 2*np.eye(2), np.diag((1,2)), np.array(((3, 2), (2, 3)))]
-    for i in range(4):
-        mn = stats.multivariate_normal(means[i], sigmas[i]*0.1)
-        x[i*N:(i+1)*N, :] = mn.rvs(N)
-    a = np.array((0,1,2,3)).reshape((-1, 1))
-    y = np.tile(a, N).flatten()
+    sigmas = [np.eye(2), 2 * np.eye(2), np.diag((1, 2)), np.array(((3, 2), (2, 3)))]
+    # for i in range(4):
+    #     mn = stats.multivariate_normal(means[i], sigmas[i]*0.1)
+    #     x[i*N:(i+1)*N, :] = mn.rvs(N)
+    # a = np.array((0,1,2,3)).reshape((-1, 1))
+    # y = np.tile(a, N).flatten()
+    x, y = make_blobs(800, n_features=2, centers=means, cluster_std=(0.1, 0.2, 0.1, 0.1))
     clf = svm.SVC(C=1, kernel='rbf', gamma=1, decision_function_shape='ovr')
     # clf = svm.SVC(C=1, kernel='linear', decision_function_shape='ovr')
     clf.fit(x, y)
     y_hat = clf.predict(x)
     acc = accuracy_score(y, y_hat)
     np.set_printoptions(suppress=True)
-    print('预测正确的样本个数：%d，正确率：%.2f%%' % (round(acc*4*N), 100*acc))
+    print('预测正确的样本个数：%d，正确率：%.2f%%' % (round(acc * 4 * N), 100 * acc))
     # decision_function
     print(clf.decision_function(x))
     print(y_hat)
@@ -49,7 +51,7 @@ if __name__ == "__main__":
     mpl.rcParams['axes.unicode_minus'] = False
     plt.figure(facecolor='w')
     plt.pcolormesh(x1, x2, y_test, cmap=cm_light)
-    plt.contour(x1, x2, y_test, levels=(0,1,2), colors='k', linestyles='--')
+    plt.contour(x1, x2, y_test, levels=(0, 1, 2), colors='k', linestyles='--')
     plt.scatter(x[:, 0], x[:, 1], s=20, c=y, cmap=cm_dark, edgecolors='k', alpha=0.7)
     plt.xlabel('$X_1$', fontsize=11)
     plt.ylabel('$X_2$', fontsize=11)
